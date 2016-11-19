@@ -246,4 +246,53 @@ public class GeneratorRestComponent {
         return stringArray[randomGenerator.nextInt(stringArray.length)];
     }
 
+    //Формат СНИЛС: «123-456-789 01», где цифры могут быть любыми, а последние две являются контрольной суммой, вычисляемой по особому алгоритму[4]
+    @GET
+    @Path("/getsnils")
+    @Produces("text/plain")
+    public String getSNILS() {
+        int[] snilsArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
+
+        List<Integer>  snils_array = getShuffleArray(snilsArray);
+        StringBuilder sb = new StringBuilder();
+        sb.delete(0, sb.length());
+
+        for (int i =0; i<3; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append("-");
+        for (int i =3; i<6; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append("-");
+        for (int i =6; i<9; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append(" ");
+        sb.append(calculateSnils(snils_array));
+
+        return sb.toString();
+    }
+    private static String calculateSnils(List<Integer> snilsArray){
+        String snils = "0";
+        int sum = 0;
+        for (int i=0; i<9; i++) {
+            sum += snilsArray.get(i) * i;
+        }
+        int balance = sum % 101;
+        snils = String.valueOf(balance);
+
+        return snils;
+    }
+    public static List<Integer> getShuffleArray(int[] array) {
+        List<Integer> solution = new ArrayList<Integer>();
+        for (int i = 1; i < array.length; i++)
+        {
+            solution.add(array[i]);
+        }
+        Collections.shuffle(solution);
+        return solution;
+
+    }
+
 }
