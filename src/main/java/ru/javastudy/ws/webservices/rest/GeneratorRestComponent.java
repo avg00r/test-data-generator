@@ -1,11 +1,14 @@
 package ru.javastudy.ws.webservices.rest;
 
 import org.springframework.web.bind.annotation.*;
+import ru.javastudy.ws.main.CardNumberGenerator;
 import ru.javastudy.ws.main.GetRandomLine;
+import ru.javastudy.ws.main.TestRunner;
 
 
 import javax.ws.rs.*;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.*;
 
 
@@ -15,6 +18,13 @@ import java.text.SimpleDateFormat;
 
 
 public class GeneratorRestComponent {
+
+    @GET
+    @Path("/start")
+    @Produces("text/plain")
+    public String start() throws MalformedURLException {
+        return TestRunner.start();
+    }
 
     public GeneratorRestComponent() {}
 
@@ -38,31 +48,248 @@ public class GeneratorRestComponent {
 //        goodsList.add(new Goods(3, "goods3"));
 //        return new Document(777, "firstDocument", goodsList);
 //    }
+//Формат СНИЛС: «123-456-789 01», где цифры могут быть любыми, а последние две являются контрольной суммой, вычисляемой по особому алгоритму[4]
+
+    /**
+     * Возвращает СНИЛС
+     * @return
+     */
+    @GET
+    @Path("/getsnils")
+    @Produces("text/plain")
+    public String getSNILS() {
+        int[] snilsArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
+
+        List<Integer>  snils_array = getShuffleArray(snilsArray);
+        StringBuilder sb = new StringBuilder();
+        sb.delete(0, sb.length());
+
+        for (int i =0; i<3; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append("-");
+        for (int i =3; i<6; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append("-");
+        for (int i =6; i<9; i++) {
+            sb.append(snils_array.get(i));
+        }
+        sb.append(" ");
+        sb.append(calculateSnils(snils_array));
+
+        return sb.toString();
+}
+
+    /**
+     * Возвращает ИНН
+     * @param paramVal передаётся количество символов ИНН - 10 либло 12.
+     * @return
+     */
+    @GET
+    @Path("/getinn")
+    @Produces("text/plain")
+    public String getINN(@QueryParam("paramVal") int paramVal) {
+        int[] factor1 = {7, 2, 4, 10, 3, 5, 9, 4, 6, 8};
+        int[] factor2 = {3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8};
+        int[] factor3 = {2, 4, 10, 3, 5, 9, 4, 6, 8};
+        int[] innArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
+        int[] innArray2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3};
+
+        StringBuilder sb = new StringBuilder();
+
+        if (paramVal == 10) {
+            int sum = 0;
+            List<Integer>  snils_array1 = getShuffleArray(innArray);
+            for (int i = 0; i < 9; i++) {
+                sum+= factor3[i]*snils_array1.get(i);
+                sb.append(snils_array1.get(i));
+            }
+            int balance = sum % 11;
+            if (balance == 10) {
+                balance = 0;
+            }
+            sb.append(balance);
+        }
+        else if (paramVal == 12) {
+            int sum1 = 0;
+            int sum2 = 0;
+            List<Integer>  snils_array2 = getShuffleArray(innArray2);
+            for (int i = 0; i < 10; i++) {
+                sum1+= factor1[i]*snils_array2.get(i);
+                sum2+= factor2[i]*snils_array2.get(i);
+                sb.append(snils_array2.get(i));
+            }
+            int balance1 = sum1 % 11;
+            int balance2 = sum2 % 11;
+            if (balance2 == 10) {
+                balance2 = 0;
+            }
+            sb.append(balance1);
+            sb.append(balance2);
+        }
+        else {
+            return "Ошибка при вводе входных параметров!";
+        }
+
+        return sb.toString();
+    }
+
+    //Номер банковской карты
+    @GET
+    @Path("/getcardnumber")
+    @Produces("text/plain")
+    public String getCardNumber(@QueryParam("many") String many, @QueryParam("cardType") String cardType) {
+        int howMany = 0;
+        try {
+            howMany = Integer.parseInt(many);
+        } catch (Exception e) {
+            System.err
+                    .println("Неправильный СС номеру");
+        }
+        String[] creditcardnumbers;
+        switch (cardType) {
+            case "mastercard":
+                creditcardnumbers = CardNumberGenerator.generateMasterCardNumbers(howMany);
+                break;
+            case "visa":
+                creditcardnumbers = CardNumberGenerator.generateVisaCardNumbers(howMany);
+                break;
+            default:
+                creditcardnumbers = CardNumberGenerator.generateMasterCardNumbers(howMany);
+                break;
+        }
+
+        return creditcardnumbers.length == 0 ? "Неправильные параметры" : creditcardnumbers[0];
+    }
 
     @GET
-    @Path("/getcomments")
-   // @Produces("application/xml")
-    @Produces("application/JSON")
-    public String getComments() {
+    @Path("/getkpp")
+    @Produces("text/plain")
+    public String getKpp() {
+        String[] sample;
+        File f = new File("D:\\data\\kpp.csv");
+        String kppNumber = GetRandomLine.getRandomLine(f, "UTF-8");
+        String[] arrNumber =  {"100","200","300","400","500","600","700","800","900"};
+        for (int i = 0; i< arrNumber.length; i++) {
+            if (arrNumber[i].equals(kppNumber)) {
+                kppNumber = "0" + kppNumber;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(kppNumber);
+
+        //sb.append(" ");
+        int[] reasonArray  = new int[99];
+        for (int i=0; i<reasonArray.length; i++) {
+            reasonArray[i]=i+1;
+        }
+        List<Integer>  reason_arrayList = getShuffleArray(reasonArray);
+        sb.append(reason_arrayList.get(1));
+
+        //sb.append(" ");
+        int[] reasonArray2  = new int[999];
+        for (int i=1; i<999; i++) {
+            reasonArray2[i]=i;
+        }
+        List<Integer>  position_arrayList2 = getShuffleArray(reasonArray2);
+        sb.append(position_arrayList2.get(1));
+        return sb.toString();
+    }
+
+    @GET
+    @Path("/getcomment")
+    @Produces("text/plain")
+    public String getComment() {
 //        Goods goods = new Goods();
 //        goods.setName("Some Goods name");
 //        goods.setId(1);
         return "blah-blah-blah";
     }
 
-//    @GET
-//    @Path("/getnumber")
-//    @Produces("application/JSON")
-//    public Integer getNumber(int bound) {
-//        Random randomGenerator = new Random();
-//        Integer number = randomGenerator.nextInt(bound);
-//        return number;
-//    }
+    @GET
+    @Path("/getcurrenncy")
+    @Produces("text/plain")
+    public String getCurrency() {
+
+        return "blah-blah-blah";
+    }
+
+    //Дата
+    @GET
+    @Path("/getdate")
+    @Produces("text/plain")
+    public String getDate() {
+
+        return "";
+    }
+
+    /**
+     * Метод возвращает имя организации, выдавшей документ
+     * @return
+     */
+    @GET
+    @Path("/getissuer")
+    @Produces("text/plain")
+    public String getIssuer() {
+        File fileIssuerShortNames = new File("D:\\data\\issuersShortName.csv");
+        String issuerShortName = GetRandomLine.getRandomLine(fileIssuerShortNames, "UTF-8");
+
+        final File fCity = new File("D:\\data\\city.csv");
+        StringBuffer sb = new StringBuffer();
+        sb.append("Отделением ");
+        sb.append(GetRandomLine.getRandomLine(fileIssuerShortNames, "UTF-8")).append(" России в городе ").append(GetRandomLine.getRandomLine(fCity, "UTF-8"));
+        return sb.toString();
+    }
+
+    //Регистрационный знак ТС
+    @GET
+    @Path("/gettsregnumber")
+    @Produces("text/plain")
+    public String getTSRegNumber() {
+
+    return "";
+    }
+
+    /**
+    /**
+     * Генерирует серию и номер свидетельства о рождении
+     * @return серия и номер свидетельства о рождении
+     */
+    @GET
+    @Path("/getbirthserialnumber")
+    @Produces("text/plain")
+    public String getBirthSerialNumber() {
+        Random randomGenerator = new Random();
+        Integer number = randomGenerator.nextInt(100);
+        final String latin = "IXVLMD";
+        final String rus = "БВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+        final String s = "1234567890";
+
+        StringBuffer sb = new StringBuffer();
+        int latinLenght = randomGenerator.nextInt(3) + 1;
+        for (int i = 0; i < latinLenght; i++)
+        {
+            sb.append(latin.charAt(new Random().nextInt(latin.length())));
+        }
+        sb.append("-");
+        for (int i = 0; i < 2; i++)
+        {
+            sb.append(rus.charAt(new Random().nextInt(rus.length())));
+        }
+        sb.append(" № ");
+
+        for (int i = 0; i < 6; i++) {
+            sb.append(s.charAt(new Random().nextInt(s.length())));
+        }
+        return sb.toString();
+    }
 
     //Число
     @GET
     @Path("/getnumber")
-    @Produces("application/JSON")
+    @Produces("text/plain")
     public String getNumber() {
         Random randomGenerator = new Random();
         Integer number = randomGenerator.nextInt(100);
@@ -73,9 +300,8 @@ public class GeneratorRestComponent {
     //Время (текущее)
     @GET
     @Path("/gettime")
-    @Produces("application/JSON")
+    @Produces("text/plain")
     public String getTime() {
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
@@ -87,6 +313,39 @@ public class GeneratorRestComponent {
     @Produces("text/plain")
     public String getDocumentType() {
         File f = new File("D:\\data\\documenttype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+    //Тип контрагента
+    @GET
+    @Path("/getcontragenttype")
+    @Produces("text/plain")
+    public String getContrAgentType() {
+        File f = new File("D:\\data\\contragenttype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+    //Материал стен дома
+    @GET
+    @Path("/getwallmaterial")
+    @Produces("text/plain")
+    public String getWallMaterial() {
+        File f = new File("D:\\data\\wallmaterial.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+    //Состояние квартиры
+    @GET
+    @Path("/getapartmentstate")
+    @Produces("text/plain")
+    public String getApartmentState() {
+        File f = new File("D:\\data\\apartmentstate.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Состояние квартиры
+    @GET
+    @Path("/getreligion")
+    @Produces("text/plain")
+    public String getReligion() {
+        File f = new File("D:\\data\\religion.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 //
@@ -138,16 +397,8 @@ public class GeneratorRestComponent {
     @Path("/getposition")
     @Produces("text/plain")
     public String getPosition() {
-        //TODO Positions.csv
-        Random randomGenerator = new Random();
-        String stringArray[] = {"Атташе","Аудитор","Аэрохимик","Букмекер",
-                "Ведущий дискотеки","Генеральный директор","Дежурный оперативны","Доцент",
-                "Заведующий архивом","Инженер","Кассир",
-                "Лаборант","Массажист","Мастер","Научный сотрудник","Оператор диспетчерской",
-                "Первый помощник Президента Российской Федерации","Ревизор","Секретарь комитета",
-        "Техник","Уполномоченный фонда","Фрахтовщик","Хранитель фондов","Частный детектив",
-        "Шапитмейстер","Эксперт","Юрисконсульт"};
-        return stringArray[randomGenerator.nextInt(stringArray.length)];
+        File f = new File("D:\\data\\position.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
     //Звание
@@ -356,33 +607,7 @@ public class GeneratorRestComponent {
         return stringArray[randomGenerator.nextInt(stringArray.length)];
     }
 
-    //Формат СНИЛС: «123-456-789 01», где цифры могут быть любыми, а последние две являются контрольной суммой, вычисляемой по особому алгоритму[4]
-    @GET
-    @Path("/getsnils")
-    @Produces("text/plain")
-    public String getSNILS() {
-        int[] snilsArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
 
-        List<Integer>  snils_array = getShuffleArray(snilsArray);
-        StringBuilder sb = new StringBuilder();
-        sb.delete(0, sb.length());
-
-        for (int i =0; i<3; i++) {
-            sb.append(snils_array.get(i));
-        }
-        sb.append("-");
-        for (int i =3; i<6; i++) {
-            sb.append(snils_array.get(i));
-        }
-        sb.append("-");
-        for (int i =6; i<9; i++) {
-            sb.append(snils_array.get(i));
-        }
-        sb.append(" ");
-        sb.append(calculateSnils(snils_array));
-
-        return sb.toString();
-    }
     private static String calculateSnils(List<Integer> snilsArray){
         String snils = "0";
         int sum = 0;
