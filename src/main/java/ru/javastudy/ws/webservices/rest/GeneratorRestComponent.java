@@ -8,6 +8,8 @@ import ru.javastudy.ws.main.TestRunner;
 
 import javax.ws.rs.*;
 import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.*;
 
@@ -22,7 +24,7 @@ public class GeneratorRestComponent {
     @GET
     @Path("/start")
     @Produces("text/plain")
-    public String start() throws MalformedURLException {
+    public String start() throws MalformedURLException, IOException {
         return TestRunner.start();
     }
 
@@ -135,6 +137,12 @@ public class GeneratorRestComponent {
         return sb.toString();
     }
 
+    /**
+     * Генерация номера кредитной карты
+     * @param many код сс
+     * @param cardType вид карты (MasterCard/Visa)
+     * @return
+     */
     //Номер банковской карты
     @GET
     @Path("/getcardnumber")
@@ -163,6 +171,10 @@ public class GeneratorRestComponent {
         return creditcardnumbers.length == 0 ? "Неправильные параметры" : creditcardnumbers[0];
     }
 
+    /**
+     * Генерирует КПП
+     * @return КПП ном
+     */
     @GET
     @Path("/getkpp")
     @Produces("text/plain")
@@ -198,14 +210,23 @@ public class GeneratorRestComponent {
         return sb.toString();
     }
 
+    /**
+     * Возвращает случайный комментарий
+     * @return Случайный комментарий
+     */
     @GET
     @Path("/getcomment")
     @Produces("text/plain")
     public String getComment() {
-//        Goods goods = new Goods();
-//        goods.setName("Some Goods name");
-//        goods.setId(1);
-        return "blah-blah-blah";
+        File f = new File("D:\\data\\cityAction.csv");
+        String cityAction = GetRandomLine.getRandomLine(f, "UTF-8");
+
+        File f1 = new File("D:\\data\\city.csv");
+        String city = GetRandomLine.getRandomLine(f1, "UTF-8");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(cityAction).append(" ").append(city);
+        return sb.toString();
     }
 
     @GET
@@ -220,14 +241,14 @@ public class GeneratorRestComponent {
     @GET
     @Path("/getdate")
     @Produces("text/plain")
-    public String getDate() {
+    public Date getDate() {
 
-        return "";
+        return new Date();
     }
 
     /**
      * Метод возвращает имя организации, выдавшей документ
-     * @return
+     * @return Регистрационный знак ТС
      */
     @GET
     @Path("/getissuer")
@@ -286,6 +307,22 @@ public class GeneratorRestComponent {
         return sb.toString();
     }
 
+    /**
+     * Вывод IP адреса
+     * @return ip-адрес
+     */
+    @GET
+    @Path("/getip")
+    @Produces("text/plain")
+    public String getip() {
+        Random r = new Random();
+        return r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256);
+    }
+
+    /**
+     * Вывод рандомного чилса
+     * @return Случайное число
+     */
     //Число
     @GET
     @Path("/getnumber")
@@ -297,6 +334,10 @@ public class GeneratorRestComponent {
         return number.toString();
     }
 
+    /**
+     * Генерация времени
+     * @return время
+     */
     //Время (текущее)
     @GET
     @Path("/gettime")
@@ -307,6 +348,10 @@ public class GeneratorRestComponent {
         return dateFormat.format(date);
     }
 
+    /**
+     * Выдаёт случайный тип документа
+     * @return тип документа
+     */
     //Тип документа
     @GET
     @Path("/getdocumenttype")
@@ -315,6 +360,11 @@ public class GeneratorRestComponent {
         File f = new File("D:\\data\\documenttype.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
+
+    /**
+     * Случайный тип контрагента
+     * @return тип контрагента
+     */
     //Тип контрагента
     @GET
     @Path("/getcontragenttype")
@@ -323,6 +373,11 @@ public class GeneratorRestComponent {
         File f = new File("D:\\data\\contragenttype.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
+
+    /**
+     * Получения материала стен
+     * @return тип материала
+     */
     //Материал стен дома
     @GET
     @Path("/getwallmaterial")
@@ -331,6 +386,11 @@ public class GeneratorRestComponent {
         File f = new File("D:\\data\\wallmaterial.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
+
+    /**
+     * Получение случайного состояния квартиры
+     * @return состояние квартиры
+     */
     //Состояние квартиры
     @GET
     @Path("/getapartmentstate")
@@ -340,7 +400,11 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
-    //Состояние квартиры
+    /**
+     * Получение случайного вероисповедания
+     * @return религия
+     */
+    //Религии
     @GET
     @Path("/getreligion")
     @Produces("text/plain")
@@ -349,6 +413,22 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 //
+    /**
+     * Получение случайного названия Банка
+     * @return Наименование Банка
+     */
+    @GET
+    @Path("/getbankname")
+    @Produces("text/plain")
+    public String getBankName() {
+        File f = new File("D:\\data\\bankname.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает случайный металл
+     * @return Металл
+     */
     //Металл
     @GET
     @Path("/getmetal")
@@ -358,6 +438,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возвращает случайный тип банковской карты
+     * @return тип банковской карты
+     */
     //Тип банковской карты
     @GET
     @Path("/getcardtype")
@@ -375,6 +459,10 @@ public class GeneratorRestComponent {
         return dict[randomGenerator.nextInt(dict.length)];
     }
 
+    /**
+     * Получение случайного цвета
+     * @return цвет
+     */
     //Цвет
     @GET
     @Path("/getcolor")
@@ -392,6 +480,95 @@ public class GeneratorRestComponent {
         return sbColor.toString();
     }
 
+    /**
+     * Возвращает вид недвижимости
+     * @return Вид недвижимости
+     */
+    @GET
+    @Path("/getrealestatetype")
+    @Produces("text/plain")
+    public String getRealEstateType() {
+        File f = new File("D:\\data\\realestatetype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает случайную единицу измерения
+     * @return Единица измерения
+     */
+    @GET
+    @Path("/getunit")
+    @Produces("text/plain")
+    public String getUnit() {
+        File f = new File("D:\\data\\unit.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает вид ТС
+     * @return Вид ТС
+     */
+    @GET
+    @Path("/gettskind")
+    @Produces("text/plain")
+    public String getTSKind() {
+        File f = new File("D:\\data\\tskind.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает марку ТС
+     * @return Марка ТС
+     */
+    @GET
+    @Path("/getsmark")
+    @Produces("text/plain")
+    public String getTSMark() {
+        File f = new File("D:\\data\\tsmark.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает право собственности
+     * @return Вид права собственности
+     */
+    @GET
+    @Path("/getownershipright")
+    @Produces("text/plain")
+    public String getOwnershipRight() {
+        File f = new File("D:\\data\\ownershipright.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает аббривиатуру организационно правовой формы организации
+     * @return Аббривиатуру организационно правовой формы организации
+     */
+    @GET
+    @Path("/getorganizationform")
+    @Produces("text/plain")
+    public String getOrganizationForm() {
+        File f = new File("D:\\data\\organizationform.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    /**
+     * Возвращает аббривиатуру страны
+     * @return Аббривиатуру страны
+     */
+    @GET
+    @Path("/getcountryabbr")
+    @Produces("text/plain")
+    public String getCountryAbbr() {
+        File f = new File("D:\\data\\countryAbbr.csv");
+        String countryAbbr = GetRandomLine.getRandomLine(f, "UTF-8");
+
+        return countryAbbr;
+    }
+    /**
+     * Возвращает должность из стандартного классификатора должностей
+     * @return должность
+    */
     //Должность
     @GET
     @Path("/getposition")
@@ -401,6 +578,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возращает случайное звание
+     * @return ранг
+     */
     //Звание
     @GET
     @Path("/getrank")
@@ -416,6 +597,10 @@ public class GeneratorRestComponent {
         return stringArray[randomGenerator.nextInt(stringArray.length)];
     }
 
+    /**
+     * Генерирует случайный cvv код
+     * @return
+     */
     //CVV
     @GET
     @Path("/getcvv")
@@ -430,6 +615,10 @@ public class GeneratorRestComponent {
         return sbCVV.toString();
     }
 
+    /**
+     * Генерация пин-кода
+     * @return пин-код
+     */
     //PIN. ISO 9564-1 length 4-12.
     @GET
     @Path("/getpin")
@@ -446,6 +635,11 @@ public class GeneratorRestComponent {
         return sbPIN.toString();
     }
 
+    /**
+     * Генерация ОКПО
+     * @param okpoType тип лица (ЮР/ИП)
+     * @return номер ОКПО
+     */
     @GET
     @Path("/getokpo")
     @Produces("text/plain")
@@ -472,6 +666,11 @@ public class GeneratorRestComponent {
         return sbOKPO.toString();
     }
 
+    /**
+     * Рассчёт контрольной суммы по методике расчёта контрольного числа
+     * @param okpoNumber номер ОКПО
+     * @return контрольная сумма
+     */
     //Метод рассчёта контрольной суммы по Методике расчета контрольного числа, приведенной в Правилах стандартизации
     //ПР 50.1.024-2005 "Основные положения и порядок проведения работ по разработке, ведению и применению общероссийских классификаторов"
     private String calculateCRC(String okpoNumber){
@@ -487,6 +686,10 @@ public class GeneratorRestComponent {
         return crc;
     }
 
+    /**
+     * Возвращает случайный язык
+     * @return язык
+     */
     //Язык
     @GET
     @Path("/getlanguage")
@@ -496,6 +699,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возвращает случайную национальность
+     * @return национальность
+     */
     //Национальность
     @GET
     @Path("/getnationality")
@@ -505,6 +712,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Получание случайного гражданства
+     * @return гразданство
+     */
     //Гражданство
     @GET
     @Path("/getcitizenship")
@@ -514,6 +725,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Получанет случайный тип образования
+     * @return образование
+     */
     //Образование
     @GET
     @Path("/geteducation")
@@ -523,6 +738,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возвращает квалификацию по образованию
+     * @return квалификация
+     */
     //Квалификация по образованию
     @GET
     @Path("/geteducationqualification")
@@ -531,6 +750,11 @@ public class GeneratorRestComponent {
         File f = new File("D:\\data\\educationqualification.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
+
+    /**
+     * Получение случайного региона
+     * @return регион
+     */
     //Регион
     @GET
     @Path("/getregion")
@@ -539,6 +763,11 @@ public class GeneratorRestComponent {
         File f = new File("D:\\data\\region.csv");
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
+
+    /**
+     * Получение случайного города или населённого пункта
+     * @return город/населённый пункт
+     */
     //Город/Населенный пункт
     @GET
     @Path("/getcity")
@@ -548,6 +777,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Получение случайного населённого пункта
+     * @return населённый пункт
+     */
     //Тип населенного пункта
     @GET
     @Path("/getcitytype")
@@ -557,6 +790,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Получение случайного типа улицы
+     * @return тип улицы
+     */
     //Тип улицы
     @GET
     @Path("/getstreettype")
@@ -577,6 +814,10 @@ public class GeneratorRestComponent {
 //        return stringArray[randomGenerator.nextInt(stringArray.length)];
 //    }
 
+    /**
+     *Возвращает право на проживание
+     * @return право на проживание
+     */
     //Право на проживание
     @GET
     @Path("/getrighttolive")
@@ -586,6 +827,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возвращает семейное положение
+     * @return семейное положение
+     */
     //Семейное положение (по документу Общероссийский классификатор информации о населении (ОКИН))
     @GET
     @Path("/getmartialstatus")
@@ -595,6 +840,10 @@ public class GeneratorRestComponent {
         return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
+    /**
+     * Возвращает степень родства
+     * @return степень родства
+     */
     //Степень родства по ОКИН код 11 (http://classifikators.ru/okin/11)
     @GET
     @Path("/getrelationdegree")
@@ -608,6 +857,11 @@ public class GeneratorRestComponent {
     }
 
 
+    /**
+     * Вычисление снилс
+     * @param snilsArray массив снилс
+     * @return
+     */
     private static String calculateSnils(List<Integer> snilsArray){
         String snils = "0";
         int sum = 0;
@@ -619,6 +873,12 @@ public class GeneratorRestComponent {
 
         return snils;
     }
+
+    /**
+     * Переставляет элементы в массиве
+     * @param array массив
+     * @return
+     */
     public static List<Integer> getShuffleArray(int[] array) {
         List<Integer> solution = new ArrayList<Integer>();
         for (int i = 1; i < array.length; i++)
@@ -628,6 +888,78 @@ public class GeneratorRestComponent {
         Collections.shuffle(solution);
         return solution;
 
+    }
+
+    /**
+     * Генерация ОГРН
+     * @return ОГРН
+     */
+    @GET
+    @Path("/getogrn")
+    @Produces("text/plain")
+    public String getOGRN() {
+        StringBuilder sb = new StringBuilder();
+        int[] firstArray  = {1, 5, 2, 6, 7, 8, 9, 3, 4};
+        List<Integer>  first_arrayList = getShuffleArray(firstArray);
+
+        sb.append(first_arrayList.get(1));
+        int secondNumber  = 16;
+
+        //sb.append(" ");
+        sb.append(secondNumber);
+
+        File f = new File("D:\\data\\subjectRF.csv");
+        String ogrnThirdNumber = GetRandomLine.getRandomLine(f, "UTF-8");
+
+        //sb.append(" ");
+        sb.append(ogrnThirdNumber);
+        String[] arrOgrnNumber =  {"1","2","3","4","5","6","7","8","9"};
+
+/*
+        for (int i = 0; i< arrOgrnNumber.length; i++) {
+            if (arrOgrnNumber[i].equals(ogrnThirdNumber)) {
+                ogrnThirdNumber = "0" + ogrnThirdNumber;
+            }
+        }
+*/
+
+        int[] forthArray  = new int[98];
+        for (int i = 1; i < forthArray.length; i++){
+            forthArray[i] = i;
+        }
+        List<Integer>  forth_arrayList = getShuffleArray(forthArray);
+        Integer forthNumber = forth_arrayList.get(1);
+
+        //sb.append(" ");
+        sb.append(forthNumber);
+
+
+        //sb.append(" ");
+        int[] arrFive =  {1,2,3,4,5,6,7,8,9};
+        List<Integer>  five_arrayList = getShuffleArray(arrFive);
+        int[] fiveArray =  new int[5];
+        for (int i=0; i<fiveArray.length; i++) {
+            fiveArray[i] = five_arrayList.get(i);
+            sb.append(fiveArray[i]);
+        }
+
+        //sb.append(" ");
+        //Long resultData = ;
+        BigInteger balance = BigInteger.valueOf(Long.parseLong(sb.toString()) % 11);
+        String res = "0";
+        if (balance.intValue() == 10) {
+            res = "0";
+            //sb.append(" ");
+            sb.append(res);
+        }
+        else {
+            res = balance.toString().substring(balance.toString().length()-1, balance.toString().length());
+
+            //sb.append(" ");
+            sb.append(res);
+        }
+
+        return sb.toString();
     }
 
 }
