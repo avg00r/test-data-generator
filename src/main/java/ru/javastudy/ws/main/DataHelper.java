@@ -26,7 +26,8 @@ public class DataHelper {
     public static String RANK  = "http://localhost:8181/rest/helloRestService/getrank";
     public static String CVV  = "http://localhost:8181/rest/helloRestService/getcvv";
     public static String PIN  = "http://localhost:8181/rest/helloRestService/getpin";
-    public static String OKPO  = "http://localhost:8181/rest/helloRestService/getokpo";
+    public static String OKPO_UR  = "http://localhost:8181/rest/helloRestService/getokpo?okpoType=ЮР";
+    public static String OKPO_IP  = "http://localhost:8181/rest/helloRestService/getokpo?okpoType=ИП";
     public static String LANGUAGE  = "http://localhost:8181/rest/helloRestService/getlanguage";
     public static String NATIONALITY  = "http://localhost:8181/rest/helloRestService/getnationality";
     public static String CITIZENSHIP  = "http://localhost:8181/rest/helloRestService/getcitizenship";
@@ -40,6 +41,19 @@ public class DataHelper {
     public static String MARTIALSTATUS  = "http://localhost:8181/rest/helloRestService/getmartialstatus";
     public static String RELATIONDEGREE  = "http://localhost:8181/rest/helloRestService/getrelationdegree";
     public static String OGRN  = "http://localhost:8181/rest/helloRestService/getogrn";
+    public static String COMMENT  = "http://localhost:8181/rest/helloRestService/getcomment";
+    public static String REALESTATETYPE  = "http://localhost:8181/rest/helloRestService/getrealestatetype";
+    public static String UNIT  = "http://localhost:8181/rest/helloRestService/getunit";
+    public static String TSKIND  = "http://localhost:8181/rest/helloRestService/gettskind";
+    public static String SMARK  = "http://localhost:8181/rest/helloRestService/getsmark";
+    public static String OWNERSHIPRIGHT  = "http://localhost:8181/rest/helloRestService/getownershipright";
+    public static String ORGANIZATIONFORM  = "http://localhost:8181/rest/helloRestService/getorganizationform";
+    public static String CONTRAGENTTYPE  = "http://localhost:8181/rest/helloRestService/getcontragenttype";
+    public static String BANKNAME  = "http://localhost:8181/rest/helloRestService/getbankname";
+    public static String COUNTRYABBR  = "http://localhost:8181/rest/helloRestService/getcountryabbr";
+    public static String IP  = "http://localhost:8181/rest/helloRestService/getip";
+    public static String VALUTA_RU  = "http://localhost:8181/rest/helloRestService/getvaluta?lang=ru";
+    public static String VALUTA_EN = "http://localhost:8181/rest/helloRestService/getvaluta?lang=en";
 
 
 

@@ -115,9 +115,13 @@ public class TestRunner {
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.PIN)).append("\n");
         }
-        allResults.append("\n").append("ОКПО: ").append("\n").append("---------------").append("\n");
+        allResults.append("\n").append("ОКПО ИП: ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
-            allResults.append(openSessionByURL(DataHelper.OKPO)).append("\n");
+            allResults.append(openSessionByURL(DataHelper.OKPO_IP)).append("\n");
+        }
+        allResults.append("\n").append("ОКПО ЮР: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.OKPO_UR)).append("\n");
         }
         allResults.append("\n").append("Языки: ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
@@ -171,7 +175,60 @@ public class TestRunner {
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.OGRN)).append("\n");
         }
+        allResults.append("\n").append("Комментарий: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.COMMENT)).append("\n");
+        }
+        allResults.append("\n").append("Вид недвижимости: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.REALESTATETYPE)).append("\n");
+        }
+        allResults.append("\n").append("Единицы измерения: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.UNIT)).append("\n");
+        }
+        allResults.append("\n").append("Вид ТС: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.TSKIND)).append("\n");
+        }
+        allResults.append("\n").append("Марка ТС: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.SMARK)).append("\n");
+        }
+        allResults.append("\n").append("Право собственности: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.OWNERSHIPRIGHT)).append("\n");
+        }
+        allResults.append("\n").append("Организационно правовая форма: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.ORGANIZATIONFORM)).append("\n");
+        }
+        allResults.append("\n").append("Тип контрагента: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.CONTRAGENTTYPE)).append("\n");
+        }
+        allResults.append("\n").append("Название банка: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.BANKNAME)).append("\n");
+        }
+        allResults.append("\n").append("Аббревиатура страны: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.COUNTRYABBR)).append("\n");
+        }
+        allResults.append("\n").append("IP: ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.IP)).append("\n");
+        }
+        allResults.append("\n").append("Валюта (ru): ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.VALUTA_RU)).append("\n");
+        }
+        allResults.append("\n").append("Валюта (en): ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.VALUTA_EN)).append("\n");
+        }
         return  allResults.toString();
+
     }
 
 }

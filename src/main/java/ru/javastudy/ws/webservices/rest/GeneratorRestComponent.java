@@ -30,30 +30,10 @@ public class GeneratorRestComponent {
 
     public GeneratorRestComponent() {}
 
-//    @GET
-//    @Path("/getgoods")
-//    @Produces("application/xml")
-//    public Goods getGoods() {
-//        Goods goods = new Goods();
-//        goods.setName("Some Goods name");
-//        goods.setId(1);
-//        return goods;
-//    }
-
-//    @GET
-//    @Path("/getdoc")
-//    @Produces("application/xml")
-//    public Document getDocument() {
-//        List<Goods> goodsList = new ArrayList<Goods>();
-//        goodsList.add(new Goods(1, "goods1"));
-//        goodsList.add(new Goods(2, "goods2"));
-//        goodsList.add(new Goods(3, "goods3"));
-//        return new Document(777, "firstDocument", goodsList);
-//    }
-//Формат СНИЛС: «123-456-789 01», где цифры могут быть любыми, а последние две являются контрольной суммой, вычисляемой по особому алгоритму[4]
 
     /**
      * Возвращает СНИЛС
+     * Формат СНИЛС: «123-456-789 01», где цифры могут быть любыми, а последние две являются контрольной суммой, вычисляемой по особому алгоритму[4]
      * @return
      */
     @GET
@@ -143,7 +123,6 @@ public class GeneratorRestComponent {
      * @param cardType вид карты (MasterCard/Visa)
      * @return
      */
-    //Номер банковской карты
     @GET
     @Path("/getcardnumber")
     @Produces("text/plain")
@@ -338,7 +317,6 @@ public class GeneratorRestComponent {
      * Генерация времени
      * @return время
      */
-    //Время (текущее)
     @GET
     @Path("/gettime")
     @Produces("text/plain")
@@ -352,7 +330,6 @@ public class GeneratorRestComponent {
      * Выдаёт случайный тип документа
      * @return тип документа
      */
-    //Тип документа
     @GET
     @Path("/getdocumenttype")
     @Produces("text/plain")
@@ -365,7 +342,6 @@ public class GeneratorRestComponent {
      * Случайный тип контрагента
      * @return тип контрагента
      */
-    //Тип контрагента
     @GET
     @Path("/getcontragenttype")
     @Produces("text/plain")
@@ -378,7 +354,6 @@ public class GeneratorRestComponent {
      * Получения материала стен
      * @return тип материала
      */
-    //Материал стен дома
     @GET
     @Path("/getwallmaterial")
     @Produces("text/plain")
@@ -391,7 +366,6 @@ public class GeneratorRestComponent {
      * Получение случайного состояния квартиры
      * @return состояние квартиры
      */
-    //Состояние квартиры
     @GET
     @Path("/getapartmentstate")
     @Produces("text/plain")
@@ -404,7 +378,6 @@ public class GeneratorRestComponent {
      * Получение случайного вероисповедания
      * @return религия
      */
-    //Религии
     @GET
     @Path("/getreligion")
     @Produces("text/plain")
@@ -429,7 +402,6 @@ public class GeneratorRestComponent {
      * Возвращает случайный металл
      * @return Металл
      */
-    //Металл
     @GET
     @Path("/getmetal")
     @Produces("text/plain")
@@ -668,11 +640,12 @@ public class GeneratorRestComponent {
 
     /**
      * Рассчёт контрольной суммы по методике расчёта контрольного числа
+     * Метод рассчёта контрольной суммы по Методике расчета контрольного числа, приведенной в Правилах стандартизации
+     * ПР 50.1.024-2005 "Основные положения и порядок проведения работ по разработке, ведению и применению общероссийских классификаторов"
      * @param okpoNumber номер ОКПО
      * @return контрольная сумма
      */
-    //Метод рассчёта контрольной суммы по Методике расчета контрольного числа, приведенной в Правилах стандартизации
-    //ПР 50.1.024-2005 "Основные положения и порядок проведения работ по разработке, ведению и применению общероссийских классификаторов"
+
     private String calculateCRC(String okpoNumber){
         String crc = "0";
         int sum = 0;
@@ -690,7 +663,6 @@ public class GeneratorRestComponent {
      * Возвращает случайный язык
      * @return язык
      */
-    //Язык
     @GET
     @Path("/getlanguage")
     @Produces("text/plain")
@@ -703,7 +675,6 @@ public class GeneratorRestComponent {
      * Возвращает случайную национальность
      * @return национальность
      */
-    //Национальность
     @GET
     @Path("/getnationality")
     @Produces("text/plain")
@@ -716,7 +687,6 @@ public class GeneratorRestComponent {
      * Получание случайного гражданства
      * @return гразданство
      */
-    //Гражданство
     @GET
     @Path("/getcitizenship")
     @Produces("text/plain")
@@ -729,7 +699,6 @@ public class GeneratorRestComponent {
      * Получанет случайный тип образования
      * @return образование
      */
-    //Образование
     @GET
     @Path("/geteducation")
     @Produces("text/plain")
@@ -742,7 +711,6 @@ public class GeneratorRestComponent {
      * Возвращает квалификацию по образованию
      * @return квалификация
      */
-    //Квалификация по образованию
     @GET
     @Path("/geteducationqualification")
     @Produces("text/plain")
@@ -755,7 +723,6 @@ public class GeneratorRestComponent {
      * Получение случайного региона
      * @return регион
      */
-    //Регион
     @GET
     @Path("/getregion")
     @Produces("text/plain")
@@ -768,7 +735,6 @@ public class GeneratorRestComponent {
      * Получение случайного города или населённого пункта
      * @return город/населённый пункт
      */
-    //Город/Населенный пункт
     @GET
     @Path("/getcity")
     @Produces("text/plain")
@@ -781,7 +747,6 @@ public class GeneratorRestComponent {
      * Получение случайного населённого пункта
      * @return населённый пункт
      */
-    //Тип населенного пункта
     @GET
     @Path("/getcitytype")
     @Produces("text/plain")
@@ -794,7 +759,6 @@ public class GeneratorRestComponent {
      * Получение случайного типа улицы
      * @return тип улицы
      */
-    //Тип улицы
     @GET
     @Path("/getstreettype")
     @Produces("text/plain")
@@ -818,7 +782,6 @@ public class GeneratorRestComponent {
      *Возвращает право на проживание
      * @return право на проживание
      */
-    //Право на проживание
     @GET
     @Path("/getrighttolive")
     @Produces("text/plain")
@@ -960,6 +923,31 @@ public class GeneratorRestComponent {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Генерация ввалюты
+     * @param lang на английском (en) / русском (ru)
+     * @return валюта
+     */
+    @GET
+    @Path("/getvaluta")
+    @Produces("text/plain")
+    public String getValuta(@QueryParam("lang") String lang) {
+        String file_name = "";
+        if ("RU".equals(lang.toUpperCase())) {
+            file_name = "D:\\data\\valuta_ru.csv";
+        }
+        else if ("EN".equals(lang.toUpperCase())) {
+            file_name = "D:\\data\\valuta_en.csv";
+        }
+        else {
+            return "Ошибка при задании параметров";
+        }
+        File f = new File(file_name);
+        String valuta = GetRandomLine.getRandomLine(f, "UTF-8");
+
+        return valuta;
     }
 
 }
