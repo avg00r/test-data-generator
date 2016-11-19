@@ -1,5 +1,6 @@
 package ru.javastudy.ws.webservices.rest;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.javastudy.ws.model.Document;
 import ru.javastudy.ws.model.Goods;
 
@@ -30,7 +31,7 @@ public class GeneratorRestComponent {
     @Path("/getdoc")
     @Produces("application/xml")
     public Document getDocument() {
-        List<Goods> goodsList = new ArrayList<>();
+        List<Goods> goodsList = new ArrayList<Goods>();
         goodsList.add(new Goods(1, "goods1"));
         goodsList.add(new Goods(2, "goods2"));
         goodsList.add(new Goods(3, "goods3"));
@@ -193,9 +194,13 @@ public class GeneratorRestComponent {
     @GET
     @Path("/getokpo")
     @Produces("text/plain")
-    public String getOKPO() {
+    public String getOKPO(@RequestParam("okpoType") String okpoType) {
         //TODO параметризовать ЮР - 8, для ИП длина 10. По умолчанию только 8 (последний символ - контрольная сумма).
         Integer okpoLength = 7;
+        String IND_P = "ИП";
+        if (IND_P.equals(okpoType)) {
+             okpoLength = 9;
+        }
 
         String s = "1234567890";
         Random randomGenerator = new Random();
@@ -213,10 +218,15 @@ public class GeneratorRestComponent {
 
     //Метод рассчёта контрольной суммы по Методике расчета контрольного числа, приведенной в Правилах стандартизации
     //ПР 50.1.024-2005 "Основные положения и порядок проведения работ по разработке, ведению и применению общероссийских классификаторов"
-    private String calculateCRC(String number){
+    private String calculateCRC(String okpoNumber){
         String crc = "0";
+        int sum = 0;
         //TODO http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=EXP&n=369186&rnd=228224.3208731668&dst=100447&fld=134#0
-
+        for (int i=0; i<okpoNumber.length(); i++) {
+            sum += Integer.parseInt(okpoNumber.substring(i,1)) * i;
+        }
+        int balance = sum % 11;
+        crc = String.valueOf(balance);
 
         return crc;
     }
