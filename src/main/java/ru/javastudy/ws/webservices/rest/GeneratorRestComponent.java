@@ -1,10 +1,11 @@
 package ru.javastudy.ws.webservices.rest;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.javastudy.ws.model.Document;
-import ru.javastudy.ws.model.Goods;
+import org.springframework.web.bind.annotation.*;
+import ru.javastudy.ws.main.GetRandomLine;
+
 
 import javax.ws.rs.*;
+import java.io.File;
 import java.util.*;
 
 
@@ -17,26 +18,26 @@ public class GeneratorRestComponent {
 
     public GeneratorRestComponent() {}
 
-    @GET
-    @Path("/getgoods")
-    @Produces("application/xml")
-    public Goods getGoods() {
-        Goods goods = new Goods();
-        goods.setName("Some Goods name");
-        goods.setId(1);
-        return goods;
-    }
+//    @GET
+//    @Path("/getgoods")
+//    @Produces("application/xml")
+//    public Goods getGoods() {
+//        Goods goods = new Goods();
+//        goods.setName("Some Goods name");
+//        goods.setId(1);
+//        return goods;
+//    }
 
-    @GET
-    @Path("/getdoc")
-    @Produces("application/xml")
-    public Document getDocument() {
-        List<Goods> goodsList = new ArrayList<Goods>();
-        goodsList.add(new Goods(1, "goods1"));
-        goodsList.add(new Goods(2, "goods2"));
-        goodsList.add(new Goods(3, "goods3"));
-        return new Document(777, "firstDocument", goodsList);
-    }
+//    @GET
+//    @Path("/getdoc")
+//    @Produces("application/xml")
+//    public Document getDocument() {
+//        List<Goods> goodsList = new ArrayList<Goods>();
+//        goodsList.add(new Goods(1, "goods1"));
+//        goodsList.add(new Goods(2, "goods2"));
+//        goodsList.add(new Goods(3, "goods3"));
+//        return new Document(777, "firstDocument", goodsList);
+//    }
 
     @GET
     @Path("/getcomments")
@@ -83,16 +84,19 @@ public class GeneratorRestComponent {
     //Тип документа
     @GET
     @Path("/getdocumenttype")
-    //@Produces("application/JSON")
     @Produces("text/plain")
     public String getDocumentType() {
-        Random randomGenerator = new Random();
-        String dict[] = {"Паспорт РФ","Загранпаспорт","Пенсионное удостоверение","Военный билет","Паспорт моряка",
-                "Временное удостоверение личности гражданина Российской Федерации"};
-//        List<String> documentsList= new ArrayList<String>();
-//        documentsList.addAll(new Collection<String>(){"паспорт", "загранпаспорт", "пенсионное удостоверение"});
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        return dict[randomGenerator.nextInt(dict.length)];
+        File f = new File("D:\\data\\documenttype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+//
+    //Металл
+    @GET
+    @Path("/getmetal")
+    @Produces("text/plain")
+    public String getMetal() {
+        File f = new File("D:\\data\\metal.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
     }
 
     //Тип банковской карты
@@ -194,7 +198,8 @@ public class GeneratorRestComponent {
     @GET
     @Path("/getokpo")
     @Produces("text/plain")
-    public String getOKPO(@RequestParam("okpoType") String okpoType) {
+    @RequestMapping(value = "/{okpoType}", method = RequestMethod.GET)
+    public @ResponseBody String getOKPO(@QueryParam("okpoType") String okpoType) {
         //TODO параметризовать ЮР - 8, для ИП длина 10. По умолчанию только 8 (последний символ - контрольная сумма).
         Integer okpoLength = 7;
         String IND_P = "ИП";
@@ -223,7 +228,7 @@ public class GeneratorRestComponent {
         int sum = 0;
         //TODO http://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=EXP&n=369186&rnd=228224.3208731668&dst=100447&fld=134#0
         for (int i=0; i<okpoNumber.length(); i++) {
-            sum += Integer.parseInt(okpoNumber.substring(i,1)) * i;
+            sum += Integer.parseInt(okpoNumber.substring(i,i+1)) * i;
         }
         int balance = sum % 11;
         crc = String.valueOf(balance);
@@ -236,13 +241,118 @@ public class GeneratorRestComponent {
     @Path("/getlanguage")
     @Produces("text/plain")
     public String getLanguage() {
+        File f = new File("D:\\data\\language.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Национальность
+    @GET
+    @Path("/getnationality")
+    @Produces("text/plain")
+    public String getNationality() {
+        File f = new File("D:\\data\\nationality.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Гражданство
+    @GET
+    @Path("/getcitizenship")
+    @Produces("text/plain")
+    public String getCitizenship() {
+        File f = new File("D:\\data\\citizenship.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Образование
+    @GET
+    @Path("/geteducation")
+    @Produces("text/plain")
+    public String getEducation() {
+        File f = new File("D:\\data\\education.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Квалификация по образованию
+    @GET
+    @Path("/geteducationqualification")
+    @Produces("text/plain")
+    public String getEducationQualification() {
+        File f = new File("D:\\data\\educationqualification.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+    //Регион
+    @GET
+    @Path("/getregion")
+    @Produces("text/plain")
+    public String getRegion() {
+        File f = new File("D:\\data\\region.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+    //Город/Населенный пункт
+    @GET
+    @Path("/getcity")
+    @Produces("text/plain")
+    public String getCity() {
+        File f = new File("D:\\data\\city.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Тип населенного пункта
+    @GET
+    @Path("/getcitytype")
+    @Produces("text/plain")
+    public String getCityType() {
+        File f = new File("D:\\data\\citytype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Тип улицы
+    @GET
+    @Path("/getstreettype")
+    @Produces("text/plain")
+    public String getStreetType() {
+        File f = new File("D:\\data\\streettype.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Улица
+//    @GET
+//    @Path("/getstreet")
+//    @Produces("text/plain")
+//    public String getStreet() {
+//        Random randomGenerator = new Random();
+//        String stringArray[] = {"Ленина","Центральная","Главная"};
+//        //TODO to file
+//        return stringArray[randomGenerator.nextInt(stringArray.length)];
+//    }
+
+    //Право на проживание
+    @GET
+    @Path("/getrighttolive")
+    @Produces("text/plain")
+    public String getRightToLive() {
+        File f = new File("D:\\data\\righttolive.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Семейное положение (по документу Общероссийский классификатор информации о населении (ОКИН))
+    @GET
+    @Path("/getmartialstatus")
+    @Produces("text/plain")
+    public String getMartialStatus() {
+        File f = new File("D:\\data\\martialstatus.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    //Степень родства по ОКИН код 11 (http://classifikators.ru/okin/11)
+    @GET
+    @Path("/getrelationdegree")
+    @Produces("text/plain")
+    public String getRelationDegree() {
         Random randomGenerator = new Random();
-        String stringArray[] = {"Китайский","Испанский","Английский","Арабский",
-                "Хинди","Португальский","Бенгальский","Русский",
-                "Японский","Лахнда (Западный панджаби)","Яванский",
-                "Корейский","Немецкий","Французский","Телугу","Маратхи",
-                "Турецкий","Урду","Вьетнамский",
-                "Тамильский","Итальянский","Персидский","Малайский"};
+        String stringArray[] = {"Муж (супруг)","Жена (супруга)",
+                "Свёкор","Свекровь","Тесть","Разошелся (разошлась)"};
+        //TODO to file
         return stringArray[randomGenerator.nextInt(stringArray.length)];
     }
 
