@@ -235,6 +235,10 @@ public class TestRunner {
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.PASSPORT)).append("\n");
         }
+        allResults.append("\n").append("Настраиваемая строка ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.CUSTOMSTRING)).append("\n");
+        }
         return  allResults.toString();
 
     }

@@ -947,6 +947,24 @@ public class GeneratorRestComponent {
         String secondNumberPart = generateTSCode(1).toString();
         return firstLetterPart + ' ' + firstNumberPart + ' ' + secondLetterPart + ' ' + secondNumberPart;
     }
+
+    /**
+     * Возвращает строку заданной длины из заданного массива символов
+     * @param charpool Массив символов
+     * @param length Длина строки
+     * @return Строка
+     */
+    @GET
+    @Path("/getcustomstring")
+    @Produces("text/plain")
+    public String getCustomString(@QueryParam("charpool") String charpool, @QueryParam("length") int length) {
+        String result = "";
+        Random random = new Random();
+        for(int i = 0; i < length; i++) {
+            result = result + charpool.charAt(random.nextInt(charpool.length()));
+        }
+        return result;
+    }
     protected String generateLetter(int number)
     {
         char dict[] = {'А','В','Е','К','М','Н','О','Р','С','Т','У','Х'}; //строка содержит все доступные символы
@@ -1018,4 +1036,6 @@ public class GeneratorRestComponent {
 
         return result;
     }
+
+
 }
