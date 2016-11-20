@@ -57,4 +57,5 @@ public class DataHelper {
     public static String TSREGNUMBER = "http://localhost:8181/rest/helloRestService/gettsregnumber";
     public static String PASSPORT = "http://localhost:8181/rest/helloRestService/getpassport";
     public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=abcdefghijklmnop&length=10";
+    //public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=фывфывфывыф&length=10";
 }

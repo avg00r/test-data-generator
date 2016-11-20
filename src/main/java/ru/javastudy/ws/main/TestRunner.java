@@ -237,7 +237,8 @@ public class TestRunner {
         }
         allResults.append("\n").append("Настраиваемая строка ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
-            allResults.append(openSessionByURL(DataHelper.CUSTOMSTRING)).append("\n");
+            String s = new String(DataHelper.CUSTOMSTRING);
+            allResults.append(openSessionByURL(s)).append("\n");
         }
         return  allResults.toString();
 
