@@ -31,9 +31,9 @@ public class TestRunner {
         }
     }
 
-    public static String start() throws MalformedURLException, IOException {
+    public static String start(int iter) throws MalformedURLException, IOException {
         StringBuilder allResults = new StringBuilder();
-        int k = 5;
+        int k = (iter==0?5:iter);
         allResults.append("\n").append("СНИЛС: ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.SNILS)).append("\n");
@@ -116,12 +116,10 @@ public class TestRunner {
             allResults.append(openSessionByURL(DataHelper.PIN)).append("\n");
         }
         allResults.append("\n").append("ОКПО ИП: ").append("\n").append("---------------").append("\n");
-        allResults.append(openSessionByURL(DataHelper.OKPO_IP)).append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.OKPO_IP)).append("\n");
         }
         allResults.append("\n").append("ОКПО ЮР: ").append("\n").append("---------------").append("\n");
-        allResults.append(openSessionByURL(DataHelper.OKPO_UR)).append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.OKPO_UR)).append("\n");
         }
@@ -228,6 +226,14 @@ public class TestRunner {
         allResults.append("\n").append("Валюта (en): ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.VALUTA_EN)).append("\n");
+        }
+        allResults.append("\n").append("Регистрационный номер транспортного средства РФ ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.TSREGNUMBER)).append("\n");
+        }
+        allResults.append("\n").append("Серия и номер паспорта РФ ").append("\n").append("---------------").append("\n");
+        for (int i = 0; i<k; i++){
+            allResults.append(openSessionByURL(DataHelper.PASSPORT)).append("\n");
         }
         return  allResults.toString();
 

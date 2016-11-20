@@ -54,10 +54,6 @@ public class DataHelper {
     public static String IP  = "http://localhost:8181/rest/helloRestService/getip";
     public static String VALUTA_RU  = "http://localhost:8181/rest/helloRestService/getvaluta?lang=ru";
     public static String VALUTA_EN = "http://localhost:8181/rest/helloRestService/getvaluta?lang=en";
-
-
-
-
-
-
+    public static String TSREGNUMBER = "http://localhost:8181/rest/helloRestService/gettsregnumber";
+    public static String PASSPORT = "http://localhost:8181/rest/helloRestService/getpassport";
 }

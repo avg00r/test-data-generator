@@ -24,8 +24,8 @@ public class GeneratorRestComponent {
     @GET
     @Path("/start")
     @Produces("text/plain")
-    public String start() throws MalformedURLException, IOException {
-        return TestRunner.start();
+    public String start(@QueryParam("iter") int iter) throws MalformedURLException, IOException {
+        return TestRunner.start(iter);
     }
 
     public GeneratorRestComponent() {}
@@ -243,14 +243,6 @@ public class GeneratorRestComponent {
         return sb.toString();
     }
 
-    //Регистрационный знак ТС
-    @GET
-    @Path("/gettsregnumber")
-    @Produces("text/plain")
-    public String getTSRegNumber() {
-
-    return "";
-    }
 
     /**
     /**
@@ -414,7 +406,6 @@ public class GeneratorRestComponent {
      * Возвращает случайный тип банковской карты
      * @return тип банковской карты
      */
-    //Тип банковской карты
     @GET
     @Path("/getcardtype")
     @Produces("text/plain")
@@ -425,9 +416,6 @@ public class GeneratorRestComponent {
                 "MasterCard World Signia","MasterCard Virtual","MasterCard Workplace Solutions",
                 "Visa Electron","Visa Virtual","Visa Classic","Visa Gold","Visa Platinum",
                 "Visa Signature","Visa Infinite","Visa Black Card"};
-//        List<String> documentsList= new ArrayList<String>();
-//        documentsList.addAll(new Collection<String>(){"паспорт", "загранпаспорт", "пенсионное удостоверение"});
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return dict[randomGenerator.nextInt(dict.length)];
     }
 
@@ -435,7 +423,6 @@ public class GeneratorRestComponent {
      * Получение случайного цвета
      * @return цвет
      */
-    //Цвет
     @GET
     @Path("/getcolor")
     //@Produces("application/JSON")
@@ -588,10 +575,9 @@ public class GeneratorRestComponent {
     }
 
     /**
-     * Генерация пин-кода
+     * Генерация пин-кода по ISO 9564-1 длина 4-12.
      * @return пин-код
      */
-    //PIN. ISO 9564-1 length 4-12.
     @GET
     @Path("/getpin")
     @Produces("text/plain")
@@ -645,7 +631,6 @@ public class GeneratorRestComponent {
      * @param okpoNumber номер ОКПО
      * @return контрольная сумма
      */
-
     private String calculateCRC(String okpoNumber){
         String crc = "0";
         int sum = 0;
@@ -804,10 +789,9 @@ public class GeneratorRestComponent {
     }
 
     /**
-     * Возвращает степень родства
+     * Возвращает степень родства по ОКИН код 11 (http://classifikators.ru/okin/11)
      * @return степень родства
      */
-    //Степень родства по ОКИН код 11 (http://classifikators.ru/okin/11)
     @GET
     @Path("/getrelationdegree")
     @Produces("text/plain")
@@ -815,7 +799,6 @@ public class GeneratorRestComponent {
         Random randomGenerator = new Random();
         String stringArray[] = {"Муж (супруг)","Жена (супруга)",
                 "Свёкор","Свекровь","Тесть","Разошелся (разошлась)"};
-        //TODO to file
         return stringArray[randomGenerator.nextInt(stringArray.length)];
     }
 
@@ -842,7 +825,7 @@ public class GeneratorRestComponent {
      * @param array массив
      * @return
      */
-    public static List<Integer> getShuffleArray(int[] array) {
+    private static List<Integer> getShuffleArray(int[] array) {
         List<Integer> solution = new ArrayList<Integer>();
         for (int i = 1; i < array.length; i++)
         {
@@ -950,4 +933,89 @@ public class GeneratorRestComponent {
         return valuta;
     }
 
+    /**
+     * Возвращает регистрационный знак ТС
+     * @return Регистрационный знак ТС
+     */
+    @GET
+    @Path("/gettsregnumber")
+    @Produces("text/plain")
+    public String getTSRegNumber() {
+        String firstLetterPart = generateLetter(1).toString();
+        String firstNumberPart = generateNum(3).toString();
+        String secondLetterPart = generateLetter(2).toString();
+        String secondNumberPart = generateTSCode(1).toString();
+        return firstLetterPart + ' ' + firstNumberPart + ' ' + secondLetterPart + ' ' + secondNumberPart;
+    }
+    protected String generateLetter(int number)
+    {
+        char dict[] = {'А','В','Е','К','М','Н','О','Р','С','Т','У','Х'}; //строка содержит все доступные символы
+        String result = "";
+        Random rand = new Random();
+        for(int i = 0; i < number; i++) {
+            result = result + dict[rand.nextInt(dict.length)];
+        }
+        return result;
+    }
+
+    protected String generateNum(int number)
+    {
+        int NUMBER_LENGTH = number;
+        String s = "1234567890";
+        StringBuffer sbNumber = new StringBuffer();
+
+        for (int i = 0; i < NUMBER_LENGTH; i++)
+        {
+            sbNumber.append(s.charAt(new Random().nextInt(s.length())));
+        }
+        return sbNumber.toString();
+    }
+
+    protected String generateTSCode(int number)
+    {
+        String dict[] = {"102","116","118","121","125","121","138","150","152","154","159","161","164","173","174","177","197","199"}; //строка содержит все доступные символы
+        List<String> dict2 = new ArrayList<>(Arrays.asList(dict));
+        for(int i = 1; i<=99; i++)
+        {
+            if(i<10)
+                dict2.add('0' + Integer.toString(i));
+            else
+                dict2.add(Integer.toString(i));
+        }
+        String result = "";
+        Random rand = new Random();
+        for(int i = 0; i < number; i++) {
+            result = dict2.get(rand.nextInt(dict2.size()));
+        }
+        return result;
+    }
+
+    /**
+     * Возвращает серию и номер паспорта РФ
+     * @return серия и номер паспорта РФ
+     */
+    @GET
+    @Path("/getpassport")
+    @Produces("text/plain")
+    public String getPassport() {
+        Random rand = new Random();
+        File fSub = new File("D:\\data\\subjectRF.csv");
+        String result = GetRandomLine.getRandomLine(fSub, "UTF-8");
+        List<String> dict = new ArrayList<>(Arrays.asList());
+        for(int i = 0; i<=16; i++)
+        {
+            if(i<10) {
+                dict.add('0' + Integer.toString(i));
+            }
+            else {
+                dict.add(Integer.toString(i));
+            }
+        }
+        result += " ";
+        result +=  dict.get(rand.nextInt(dict.size()));
+        result += " ";
+        result += generateNum(6);
+
+        return result;
+    }
 }
