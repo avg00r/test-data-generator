@@ -71,7 +71,7 @@ public class GeneratorRestComponent {
     @GET
     @Path("/getinn")
     @Produces("text/plain")
-    public String getINN(@QueryParam("paramVal") int paramVal) {
+    public String getINN(@QueryParam("paramVal") int paramVal)  {
         int[] factor1 = {7, 2, 4, 10, 3, 5, 9, 4, 6, 8};
         int[] factor2 = {3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8};
         int[] factor3 = {2, 4, 10, 3, 5, 9, 4, 6, 8};
