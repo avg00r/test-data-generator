@@ -97,39 +97,4 @@ public class CardNumberGenerator {
     public static String[] generateVisaCardNumbers(int howMany) {
         return credit_card_number(VISA_PREFIX_LIST, 16, howMany);
     }
-
-    public static String generateMasterCardNumber() {
-        return credit_card_number(MASTERCARD_PREFIX_LIST, 16, 1)[0];
-    }
-
-    public static boolean isValidCreditCardNumber(String creditCardNumber) {
-        boolean isValid = false;
-
-        try {
-            String reversedNumber = new StringBuffer(creditCardNumber)
-                    .reverse().toString();
-            int mod10Count = 0;
-            for (int i = 0; i < reversedNumber.length(); i++) {
-                int augend = Integer.parseInt(String.valueOf(reversedNumber
-                        .charAt(i)));
-                if (((i + 1) % 2) == 0) {
-                    String productString = String.valueOf(augend * 2);
-                    augend = 0;
-                    for (int j = 0; j < productString.length(); j++) {
-                        augend += Integer.parseInt(String.valueOf(productString
-                                .charAt(j)));
-                    }
-                }
-
-                mod10Count += augend;
-            }
-
-            if ((mod10Count % 10) == 0) {
-                isValid = true;
-            }
-        } catch (NumberFormatException e) {
-        }
-
-        return isValid;
-    }
 }

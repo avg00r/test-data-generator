@@ -46,7 +46,7 @@ public class TestRunner {
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.INN + DataHelper.INN_fl)).append("\n");
         }
-        allResults.append("\n").append("Номер карты MasterCart: ").append("\n").append("---------------").append("\n");
+        allResults.append("\n").append("Номер карты MasterCard: ").append("\n").append("---------------").append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.CARDNUMBER_MASTERCARD)).append("\n");
         }
