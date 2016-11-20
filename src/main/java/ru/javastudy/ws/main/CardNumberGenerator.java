@@ -91,11 +91,11 @@ public class CardNumberGenerator {
     }
 
     public static String[] generateMasterCardNumbers(int howMany) {
-        return credit_card_number(VISA_PREFIX_LIST, 16, howMany);
+        return credit_card_number(MASTERCARD_PREFIX_LIST, 16, howMany);
     }
 
     public static String[] generateVisaCardNumbers(int howMany) {
-        return credit_card_number(MASTERCARD_PREFIX_LIST, 16, howMany);
+        return credit_card_number(VISA_PREFIX_LIST, 16, howMany);
     }
 
     public static String generateMasterCardNumber() {

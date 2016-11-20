@@ -10,8 +10,8 @@ import java.net.*;
 
 public class TestRunner {
     //public StringBuilder allResults;
-    private static String openSessionByURL(String url) throws MalformedURLException {
-        URL urlName = new URL(url);
+    private static String openSessionByURL(String url) throws MalformedURLException, IOException {
+        URL urlName = new URL(new String(url.getBytes(), "UTF-8"));
         BufferedReader rd;
         String line;
         String result = "";
@@ -116,10 +116,12 @@ public class TestRunner {
             allResults.append(openSessionByURL(DataHelper.PIN)).append("\n");
         }
         allResults.append("\n").append("ОКПО ИП: ").append("\n").append("---------------").append("\n");
+        allResults.append(openSessionByURL(DataHelper.OKPO_IP)).append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.OKPO_IP)).append("\n");
         }
         allResults.append("\n").append("ОКПО ЮР: ").append("\n").append("---------------").append("\n");
+        allResults.append(openSessionByURL(DataHelper.OKPO_UR)).append("\n");
         for (int i = 0; i<k; i++){
             allResults.append(openSessionByURL(DataHelper.OKPO_UR)).append("\n");
         }
