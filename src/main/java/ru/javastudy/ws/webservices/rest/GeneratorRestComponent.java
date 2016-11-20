@@ -1019,6 +1019,10 @@ public class GeneratorRestComponent {
         Random rand = new Random();
         File fSub = new File("D:\\data\\subjectRF.csv");
         String result = GetRandomLine.getRandomLine(fSub, "UTF-8");
+        if (result.length()<2) {
+            String t = '0' + result;
+            result = t;
+        }
         List<String> dict = new ArrayList<>(Arrays.asList());
         for(int i = 0; i<=16; i++)
         {
@@ -1037,5 +1041,60 @@ public class GeneratorRestComponent {
         return result;
     }
 
+    /**
+     * Возвращает социальную категорию
+     * @return социальная категория
+     */
+    @GET
+    @Path("/getsoccat")
+    @Produces("text/plain")
+    public String getSocCategories() {
+        File f = new File("D:\\data\\soccat.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
 
+    /**
+     * Документы подтверждающие социальную категорию гражданина
+     * @return документ
+     */
+    @GET
+    @Path("/getsupdoc")
+    @Produces("text/plain")
+    public String getSupDocs() {
+        File f = new File("D:\\data\\supdoc.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    @GET
+    @Path("/getlgotgroup")
+    @Produces("text/plain")
+    public String getLgotGroup() {
+        File f = new File("D:\\data\\lgotgroup.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    @GET
+    @Path("/getlgot")
+    @Produces("text/plain")
+    public String getLgot() {
+        File f = new File("D:\\data\\lgot.csv");
+        return GetRandomLine.getRandomLine(f, "UTF-8");
+    }
+
+    @GET
+    @Path("/getzagrpassport")
+    @Produces("text/plain")
+    public String getZagrPassport() {
+        Random rand = new Random();
+        File fSub = new File("D:\\data\\zagr.csv");
+        String result = GetRandomLine.getRandomLine(fSub, "UTF-8");
+        if (result.length()<2) {
+            String t = '0' + result;
+            result = t;
+        }
+        result += " ";
+        result += generateNum(7);
+
+        return result;
+    }
 }

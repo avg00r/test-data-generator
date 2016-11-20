@@ -56,6 +56,11 @@ public class DataHelper {
     public static String VALUTA_EN = "http://localhost:8181/rest/helloRestService/getvaluta?lang=en";
     public static String TSREGNUMBER = "http://localhost:8181/rest/helloRestService/gettsregnumber";
     public static String PASSPORT = "http://localhost:8181/rest/helloRestService/getpassport";
-    public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=abcdefghijklmnop&length=10";
+    public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=abcdefghijklmnop&length=";
+    public static String SOCCAT = "http://localhost:8181/rest/helloRestService/getsoccat";
+    public static String SUPDOC = "http://localhost:8181/rest/helloRestService/getsupdoc";
+    public static String LGOTGROUP = "http://localhost:8181/rest/helloRestService/getlgotgroup";
+    public static String LGOT = "http://localhost:8181/rest/helloRestService/getlgot";
+    public static String ZAGRPASSPORT = "http://localhost:8181/rest/helloRestService/getzagrpassport";
     //public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=фывфывфывыф&length=10";
 }
