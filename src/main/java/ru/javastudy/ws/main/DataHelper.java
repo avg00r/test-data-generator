@@ -63,4 +63,5 @@ public class DataHelper {
     public static String LGOT = "http://localhost:8181/rest/helloRestService/getlgot";
     public static String ZAGRPASSPORT = "http://localhost:8181/rest/helloRestService/getzagrpassport";
     //public static String CUSTOMSTRING = "http://localhost:8181/rest/helloRestService/getcustomstring?charpool=фывфывфывыф&length=10";
+    
 }
